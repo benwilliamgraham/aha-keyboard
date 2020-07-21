@@ -30,7 +30,7 @@ const int def_matrix[rows][cols] = {
 
 const int fn_matrix[rows][cols] = {
     {KEY_NONE, KEY_NONE, KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7,
-     KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12, KEY_NONE, KEY_NONE},
+     KEY_F8, KEY_F9, KEY_F10, KEY_F11, KEY_F12, KEY_DELETE, KEY_NONE},
     {KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE,
      KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE, KEY_NONE,
      KEY_NONE, KEY_NONE},
@@ -45,9 +45,11 @@ const int fn_matrix[rows][cols] = {
      KEY_NONE, KEY_NONE},
 };
 
-bool key_status[rows][cols];
-
-bool *fn = &key_status[4][10];
+char OFF = 0,
+     DEF = 1,
+     FN = 2,
+     key_status[rows][cols],
+     *fn = &key_status[4][10];
 
 void setup() {
   Keyboard.begin();
@@ -62,7 +64,7 @@ void setup() {
   // create key status listing
   for (int row = 0; row < rows; row++) {
     for (int col = 0; col < cols; col++)
-      key_status[row][col] = false;
+      key_status[row][col] = OFF;
   }
 }
 
@@ -75,18 +77,23 @@ void loop() {
 
     // iterate through rows
     for (int col = 0; col < cols; col++) {
-      int key = (*fn) ? fn_matrix[row][col] : def_matrix[row][col];
+      int def_key = def_matrix[row][col],
+          fn_key = fn_matrix[row][col];
 
       // update key status
       if (digitalRead(col_pins[col]) == LOW) {
+        int key = (*fn) ? fn_key : def_key;
         if (!key_status[row][col] && key > 1)
           Keyboard.press(key);
-          delay(15);
-        key_status[row][col] = true;
+          delay(5);
+        key_status[row][col] = (*fn) ? FN : DEF;
       } else {
-        if (key_status[row][col] && key > 1)
-          Keyboard.release(key);
-        key_status[row][col] = false;
+        // ensure key that is released has the same fn status as when pressed
+        if (key_status[row][col] == DEF && def_key > 1)
+          Keyboard.release(def_key);
+        else if (key_status[row][col] = FN && fn_key > 1)
+          Keyboard.release(fn_key);
+        key_status[row][col] = OFF;
       }
     }
 
