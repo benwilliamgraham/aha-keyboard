@@ -79,10 +79,12 @@ void loop() {
       // update key status
       if (digitalRead(col_pins[col]) == LOW) {
         int key = (*fn) ? fn_key : def_key;
-        if (!key_status[row][col] && key > 1)
-          Keyboard.press(key);
-        delay(5);
-        key_status[row][col] = (*fn) ? FN : DEF;
+        if (!key_status[row][col]) {
+          if (key > 1)
+            Keyboard.press(key);
+          delay(5);
+          key_status[row][col] = (*fn) ? FN : DEF;
+        }
       } else {
         // ensure key that is released has the same fn status as when pressed
         if (key_status[row][col] == DEF && def_key > 1)
