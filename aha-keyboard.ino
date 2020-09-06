@@ -45,13 +45,13 @@ const int hm_matrix[rows][cols] = {
 const int fn_matrix[rows][cols] = {
     {_, _, KEY_F1, KEY_F2, KEY_F3, KEY_F4, KEY_F5, KEY_F6, KEY_F7, KEY_F8,
      KEY_F9, KEY_F10, KEY_F11, KEY_F12, KEY_DELETE, _},
-    {_, _, _, _, '=', _, '~', _, _, '_', _, '[', '+', _, _, _},
+    {_, _, _, _, '=', KEY_RETURN, '~', _, _, '_', _, '[', '+', _, _, _},
     {_, _, _, _, KEY_DELETE, _, '`', _, _, KEY_LEFT, KEY_DOWN, KEY_UP,
      KEY_RIGHT, _, _, _},
     {_, MODIFIERKEY_SHIFT, _, KEY_ESC, ']', _, '\\', _, _, '\\', _, '-', _, _,
      _, _},
-    {_, MODIFIERKEY_CTRL, _, MODIFIERKEY_ALT, _, KEY_DELETE, MODIFIERKEY_GUI, _,
-     _, _, _, KEY_RETURN, _, MODIFIERKEY_RIGHT_ALT, KEY_HM,
+    {_, MODIFIERKEY_CTRL, _, MODIFIERKEY_ALT, _, KEY_BACKSPACE, MODIFIERKEY_GUI, _,
+     _, _, _, KEY_DELETE, _, MODIFIERKEY_RIGHT_ALT, KEY_HM,
      MODIFIERKEY_RIGHT_CTRL},
 };
 
